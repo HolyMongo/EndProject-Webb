@@ -2,7 +2,7 @@
 $host = "localhost";
 $user = "Admin";
 $password = "Banankaka69";
-$db = "NoDatabasCreatedYet";
+$db = "slutprojekt";
 
 $options = array(
     PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'",

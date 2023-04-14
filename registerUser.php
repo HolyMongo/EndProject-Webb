@@ -36,15 +36,15 @@
                 <form action="check.php" method="POST" class="d-flex flex-column justify-content-center">
                         <div class="mb-3">
                             <label for="runame" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="runame">
+                            <input type="text" class="form-control" id="runame" name="runame">
                         </div>
                         <div class="mb-3">
                             <label for="rpwd" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="rpwd">
+                            <input type="password" class="form-control" id="rpwd" name="rpwd">
                         </div>
                         <div class="mb-3">
                             <label for="remail" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="remail">
+                            <input type="email" class="form-control" id="remail" name="remail">
                         </div>
                         <button type="submit" class="btn btn-primary w-100" name="CreateUser">Create User</button>
                         <p class="d-flex jusdtify-content-center text-center">or <br> if you already have an account</p>

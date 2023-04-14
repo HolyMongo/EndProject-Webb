@@ -1,0 +1,53 @@
+.skill-tree {
+    font-family: Arial, sans-serif;
+  }
+  
+  .skill-tree ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  
+  .skill-tree ul ul {
+    margin-left: 20px;
+  }
+  
+  .skill-tree .node {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 10px;
+    background-color: #f1f1f1;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  }
+  
+  .skill-tree .node .title {
+    font-weight: bold;
+  }
+  
+  .skill-tree .node .description {
+    font-size: 0.8em;
+    color: #666;
+  }
+  
+  .skill-tree .node:hover {
+    background-color: #e0e0e0;
+    cursor: pointer;
+  }
+  
+  .skill-tree .node.selected {
+    background-color: #d0d0d0;
+  }
+  
+  .skill-tree .node.completed {
+    background-color: #b0b0b0;
+  }
+  
+  .skill-tree .node.locked {
+    background-color: #f8f8f8;
+    color: #aaa;
+    box-shadow: none;
+  }
+  
+  .skill-tree .node.locked:hover {
+    cursor: not-allowed;
+  }
+  

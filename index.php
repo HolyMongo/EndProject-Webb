@@ -31,15 +31,14 @@
         </div>
     </nav>
     <div class="container my-5 padding-bottom-5px d-flex justify-content-center">
-        <div class="">
             <div class="card-md-5 bg-light card d-flex justify-content-center  p-2 rounded border-dark">
            <form action="check.php" method="POST" class="d-flex justify-content-center">
                 <div class="mb-3">
                     <label for="uname" class="form-label">Username</label>
-                    <input type="text" class="form-control" id="uname">
+                    <input type="text" class="form-control" id="uname" name="uname">
                 <div class="mb-3">
                     <label for="pwd" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="pwd">
+                    <input type="password" class="form-control" id="pwd" name="pwd">
                 </div>
                
                 <button type="submit" class="btn btn-primary w-100" name="SignInUser">Sign In</button><br>
@@ -47,7 +46,6 @@
                 <button type="submit" class="btn btn-primary w-100" name="Register">Register here</button>
             </form>
             </div>
-        </div>
     </div>
     
 
