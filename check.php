@@ -1,15 +1,28 @@
 <?php
 include_once("dbcon.php"); 
+include("session.php");
 
 if (isset($_POST['SignInUser'])) {
+
+    $username = strip_tags($_POST['uname']);
+    $username = trim($username);
+    $username = htmlspecialchars($username);
+    $username = stripslashes($username);
+
+    $pwd = strip_tags($_POST['pwd']);
+    $pwd = trim($pwd);
+    $pwd = htmlspecialchars($pwd);
+    $pwd = stripslashes($pwd);
+
     $sql = "SELECT * FROM users WHERE username = :username and password = :password";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute(array('username' => $_POST['uname'], 'password' => $_POST['pwd']));
+    $stmt->execute(array('username' => $username, 'password' => $pwd));
 
     $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     if (isset($res[0]['userID'])) {
-        $_SESSION['uname'] = $_POST['uname'];
+        $_SESSION['uname'] = $username;
+        $_SESSION['userID'] = $res[0]['userID'];
         header("location: loggedIn.php");
     }
     else {
@@ -29,9 +42,21 @@ if (isset($_POST['CreateUser'])) {
     }
     else {
         
-        $uname = $_POST['runame'];
-        $pwd = $_POST['rpwd'];
-        $email = $_POST['remail'];
+        $uname = strip_tags($_POST['runame']);
+        $uname = trim($uname);
+        $uname = htmlspecialchars($uname);
+        $uname = stripslashes($uname);
+
+        $pwd = strip_tags($_POST['rpwd']);
+        $pwd = trim($pwd);
+        $pwd = htmlspecialchars($pwd);
+        $pwd = stripslashes($pwd);
+        
+        $email = strip_tags($_POST['remail']);
+        $email = trim($email);
+        $email = htmlspecialchars($email);
+        $email = stripslashes($email);
+
 
         if (strlen($uname) < 15) {
             $sql = "INSERT INTO users(UserName, Password, Email) VALUES ('$uname', '$pwd', '$email')";

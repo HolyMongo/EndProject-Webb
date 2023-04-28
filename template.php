@@ -7,3 +7,4 @@
 <img src="" class="img-fluid mx-auto" alt="">
 <h3></h3>
 <p>Mer förklaring</p>
+<button type="button" class="btn btn-outline-success float-right DoneButton">Mark As Done</button>

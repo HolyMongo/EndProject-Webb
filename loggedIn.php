@@ -1,5 +1,6 @@
 <?php
   include_once("dbcon.php"); 
+  include("session.php");
 ?>
 
 <!DOCTYPE html>
@@ -20,7 +21,7 @@
 <body class="overflow-visible">
     <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
         <div class="container">
-            <a  href="#" class="navbar-brand">Christian prog 2</a>
+            <a  href="#" class="navbar-brand">Learn Unity</a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu ">
                 <span class="navbar-toggler-icon"></span>
@@ -40,7 +41,9 @@
         <div class="col">
           <?php
 
-            $stmt = $pdo->prepare("SELECT * FROM modules ORDER BY moduleID");
+          $alreadyPutOlTag = false;
+
+            $stmt = $pdo->prepare("SELECT * FROM modules ORDER BY ModuleNumber");
             $stmt->execute(array());
 
 
@@ -49,89 +52,38 @@
             $res = $stmt->fetchAll(PDO::FETCH_ASSOC);  
             $ModuleList = "<ol id=\"moduleList\" class=\"rounded-list\">";
             foreach ($res as $module) {
-              $ModuleList .= "<li class=\"ModuleItem\">" . "<p id=\"" . $module['ModuleName'] ."\">" .$module['DisplayName'] . "</p></li> ";
+              $stmt = $pdo->prepare("SELECT * FROM progress WHERE userID = :userID AND moduleID = :moduleID");
+              $stmt->execute(array('userID' => $_SESSION['userID'], 'moduleID' => $module['moduleID']));
+              $res2 = array();
+              $res2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+              if (floor($module['ModuleNumber']) != $module['ModuleNumber'] && !$alreadyPutOlTag) {
+                $alreadyPutOlTag = true;
+                $ModuleList .= "<ol id=\"moduleList\" class=\"rounded-list\">";
+              }elseif(floor($module['ModuleNumber']) == $module['ModuleNumber'] && $alreadyPutOlTag) { 
+                $alreadyPutOlTag = false;
+                $ModuleList .= "</ol>";
+              }
+                $ModuleList .= "<li class=\"ModuleItem";
+                if (isset($res2[0])) {
+                  $ModuleList .= " isCompleted";
+                }
+                $ModuleList .= "\">" . "<p id=\"" . $module['ModuleName'] ."\">" .$module['DisplayName'] . "</p></li> ";
             }
             $ModuleList .= "</ol>";
             echo $ModuleList;
+
           ?>
-         <!-- 
-          <div class="skill-tree">
-            <ul>
-              <li>
-                <a href="#">
-                  <div class="node">
-                    <span class="title">Skill A</span>
-                    <span class="description">Description of Skill A</span>
-                  </div>
-                </a>
-                <ul>
-                  <li>
-                    <a href="#">
-                      <div class="node">
-                        <span class="title">Skill A1</span>
-                        <span class="description">Description of Skill A1 what happends if i make this relly long so that it expands longer than its size?</span>
-                      </div>
-                    </a>
-                    <ul>
-                      <li>
-                        <a href="#">
-                          <div class="node">
-                            <span class="title">Assignment A1.1</span>
-                            <span class="description">Description of Assignment A1.1</span>
-                          </div>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <div class="node">
-                            <span class="title">Assignment A1.2</span>
-                            <span class="description">Description of Assignment A1.2</span>
-                          </div>
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <div class="node">
-                        <span class="title">Skill A2</span>
-                        <span class="description">Description of Skill A2</span>
-                      </div>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <a href="#">
-                  <div class="node">
-                    <span class="title">Skill B</span>
-                    <span class="description">Description of Skill B</span>
-                  </div>
-                </a>
-                <ul>
-                  <li>
-                    <a href="#">
-                      <div class="node">
-                        <span class="title">Skill B1</span>
-                        <span class="description">Description of Skill B1</span>
-                      </div>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </div> -->
       </div>
-      <div class="col-8 mt-2">
-        <div class="border border-dark p-2 overflow-auto vh-100" id="ModuleContent">
+      <div class="col-8 mt-2 h-50">
+        <div class="border border-dark p-2 overflow-auto h-50" id="ModuleContent">
           <?php
           if (isset($_GET['assignment'])) {
-
             $stmt = $pdo->prepare("SELECT * FROM modules WHERE ModuleName = :moduleName");
             $stmt->execute(array('moduleName' => $_GET['assignment']));
             $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+            
             if (isset($res[0]['content'])) { 
+              $_SESSION['ModuleID'] = $res[0]['moduleID'];
               echo $res[0]['content'];
             }
             else {
