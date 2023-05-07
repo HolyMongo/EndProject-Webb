@@ -70,17 +70,17 @@ elseif (isset($_POST['CreateUser'])) {
         //Kollar om något av värderna är "" eller ingenting och ger då ett felmedelande för respektive fel. Användaren blir senare tillbakaskickad
         if ($uname == "") {
             $_SESSION['felMedelande'] = "You have to enter a name";
-            header("location: index.php");
+            header("location: registerUser.php");
             exit;
         }
         if ($pwd == "") {
             $_SESSION['felMedelande'] = "You have to enter a password";
-            header("location: index.php");
+            header("location: registerUser.php");
             exit;
         }
         if ($email == "") {
             $_SESSION['felMedelande'] = "You have to enter an email";
-            header("location: index.php");
+            header("location: registerUser.php");
             exit;
         }
 
