@@ -26,7 +26,6 @@ function AddEventListenersSwitchAssignment(item){
 }
 
 
-//maybe do later idk. I think it may involve ajax soooo........
 function AddEventListenersDoneButton(item){
     item.addEventListener("click", DoneButton);
 }

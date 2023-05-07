@@ -1,3 +1,10 @@
+<?php
+
+    include('session.php');
+   
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,20 +21,20 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
-        <div class="container">
-            <a  href="#" class="navbar-brand">Christian prog 2</a>
+        <div class="container justify-content-center">
+            <a  href="#" class="navbar-brand">Learn Unity</a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu ">
+           <!--  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu ">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
-            <div class="collapse navbar-collapse" id="navmenu">
+ -->
+            <!-- <div class="collapse navbar-collapse" id="navmenu">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a href="about.php" class="nav-link">About me</a>
                     </li>
                 </ul>
-            </div>
+            </div> -->
         </div>
     </nav>
     <div class="container my-5 padding-bottom-5px d-flex justify-content-center">
@@ -49,6 +56,13 @@
                         <button type="submit" class="btn btn-primary w-100" name="CreateUser">Create User</button>
                         <p class="d-flex jusdtify-content-center text-center">or <br> if you already have an account</p>
                         <button type="submit" class="btn btn-primary w-100" name="SignIn">Sign In Here</button>
+                        <?php
+
+                if (isset($_SESSION['felMedelande'])) {
+                    echo "<br><p \"class=\"d-flex text-center mx-auto\">" . $_SESSION['felMedelande'] . "</p>";
+                }
+
+                ?>
                 </form>
                 
             </div>

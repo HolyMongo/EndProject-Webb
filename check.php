@@ -2,17 +2,33 @@
 include_once("dbcon.php"); 
 include("session.php");
 
-if (isset($_POST['SignInUser'])) {
+unset($_SESSION['felMedelande']); //rensar felmedelande
 
+
+if (isset($_POST['SignInUser'])) {
+    //Gör variablerna "ofarliga" genom att rensa 
     $username = strip_tags($_POST['uname']);
     $username = trim($username);
     $username = htmlspecialchars($username);
     $username = stripslashes($username);
-
+    
     $pwd = strip_tags($_POST['pwd']);
     $pwd = trim($pwd);
     $pwd = htmlspecialchars($pwd);
     $pwd = stripslashes($pwd);
+
+    //Om något av variablerna är lika med "" allstå ingenting betyder det att användaren inta har skrivit in något och får då ett felmedelande och blir tillbakaskickad
+    if ($username == "") {
+        $_SESSION['felMedelande'] = "You have to enter a name";
+        header("location: index.php");
+        exit;
+    }
+    if ($pwd == "") {
+        $_SESSION['felMedelande'] = "You have to enter a password";
+        header("location: index.php");
+        exit;
+    }
+    //annars hämtar vi data från databasen där användarnamn och lösen matchar det användaren skrev in
 
     $sql = "SELECT * FROM users WHERE username = :username and password = :password";
     $stmt = $pdo->prepare($sql);
@@ -20,28 +36,22 @@ if (isset($_POST['SignInUser'])) {
 
     $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
+    //om vi hittar något, det vill säga om det finns någon användare i databasen med båda de värdena så ger vi session variabler lite värden och sedan skickar användaren till LoggedIn.php
     if (isset($res[0]['userID'])) {
         $_SESSION['uname'] = $username;
         $_SESSION['userID'] = $res[0]['userID'];
         header("location: loggedIn.php");
+        exit;
     }
-    else {
-       echo "fel användarnamn eller lösenord<br><br>";
+    else { //annars ger vi ett felmedelande ocg skicakr tillbaka användaren
+        $_SESSION['felMedelande'] = "fel användarnamn <br> eller lösenord";
+        header("location: index.php");
+        exit;
     }
-    //header("location: loggedIn.php");
-    /* log in */
 }
+elseif (isset($_POST['CreateUser'])) {
 
-if (isset($_POST['CreateUser'])) {
-    $sql = "SELECT * FROM users WHERE username = :username";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute(array('username' => $_POST['runame']));
-    $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    if (isset($res[0]['userID'])) {
-        echo "Användarnamnet finns redan";
-    }
-    else {
-        
+    //Rensar variabler från falriga tecken och data
         $uname = strip_tags($_POST['runame']);
         $uname = trim($uname);
         $uname = htmlspecialchars($uname);
@@ -57,24 +67,54 @@ if (isset($_POST['CreateUser'])) {
         $email = htmlspecialchars($email);
         $email = stripslashes($email);
 
+        //Kollar om något av värderna är "" eller ingenting och ger då ett felmedelande för respektive fel. Användaren blir senare tillbakaskickad
+        if ($uname == "") {
+            $_SESSION['felMedelande'] = "You have to enter a name";
+            header("location: index.php");
+            exit;
+        }
+        if ($pwd == "") {
+            $_SESSION['felMedelande'] = "You have to enter a password";
+            header("location: index.php");
+            exit;
+        }
+        if ($email == "") {
+            $_SESSION['felMedelande'] = "You have to enter an email";
+            header("location: index.php");
+            exit;
+        }
 
-        if (strlen($uname) < 15) {
+        //hämtar data från databasen där den har samma användarnamn som det namnet användaren försökte skicka in
+    $sql = "SELECT * FROM users WHERE username = :username";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(array('username' => $uname));
+    $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    if (isset($res[0]['userID'])) {
+        //Om den redan finns ändras felmedelandet och användaren skickas tillbaka
+        $_SESSION['felMedelande'] = "Användarnamnet finns redan";
+        header("location: registerUser.php");
+        exit;
+    }
+    else {
+        //Om det inte finns så läggs användaren in i databasen och skickas till index.php där hen kan logga in med sin nya användare
             $sql = "INSERT INTO users(UserName, Password, Email) VALUES ('$uname', '$pwd', '$email')";
             $stmt = $pdo->prepare($sql);
             $stmt->execute(array());
-           
-        }
-        else {
-            echo "användarnamn kan inte vara längre än 15 tecken!";
-        }
+           header('location: index.php');
 
     }
 }
-
-if (isset($_POST['SignIn'])) {
+elseif (isset($_POST['SignIn'])) {
     Header("location: index.php");
+    exit;
 }
-if(isset($_POST['Register'])){
+elseif(isset($_POST['Register'])){
     header("location: registerUser.php");
+    exit;
 }
+else{
+    header("location: index.php");
+    exit;
+}
+
 ?>

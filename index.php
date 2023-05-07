@@ -1,10 +1,16 @@
+<?php
+
+include('session.php');
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Start</title>
+    <title>Learn Unity</title>
     <link
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
     rel="stylesheet"
@@ -15,35 +21,42 @@
 <body>
     <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
         <div class="container">
-            <a  href="#" class="navbar-brand">Christian prog 2</a>
+            <a  href="#" class="navbar-brand">Learn Unity</a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu ">
+           <!--  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu ">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
-            <div class="collapse navbar-collapse" id="navmenu">
+ -->
+            <!-- <div class="collapse navbar-collapse" id="navmenu">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a href="about.php" class="nav-link">About me</a>
                     </li>
                 </ul>
-            </div>
+            </div> -->
         </div>
     </nav>
     <div class="container my-5 padding-bottom-5px d-flex justify-content-center">
             <div class="card-md-5 bg-light card d-flex justify-content-center  p-2 rounded border-dark">
            <form action="check.php" method="POST" class="d-flex justify-content-center">
                 <div class="mb-3">
-                    <label for="uname" class="form-label">Username</label>
+                    <label for="uname" class="form-label">Username:</label>
                     <input type="text" class="form-control" id="uname" name="uname">
                 <div class="mb-3">
-                    <label for="pwd" class="form-label">Password</label>
+                    <label for="pwd" class="form-label">Password:</label>
                     <input type="password" class="form-control" id="pwd" name="pwd">
                 </div>
                
                 <button type="submit" class="btn btn-primary w-100" name="SignInUser">Sign In</button><br>
                 <p class="d-flex jusdtify-content-center text-center">or <br> if you do not have an account</p>
                 <button type="submit" class="btn btn-primary w-100" name="Register">Register here</button>
+                <?php
+
+                if (isset($_SESSION['felMedelande'])) {
+                    echo "<p \"class=\"d-flex text-center mx-auto\">" . $_SESSION['felMedelande'] . "</p>";
+                }
+
+                ?>
             </form>
             </div>
     </div>
