@@ -11,12 +11,12 @@ if (document.getElementsByClassName("DoneButton")) {
 function SwitchAssignment(Event) {
     var Assignment = Event.target.id;
 
-    window.location = "http://localhost:84/EndProject-Webb/loggedIn.php?assignment=" + Assignment; 
+    window.location = "loggedIn.php?assignment=" + Assignment; 
 }
 
 function DoneButton(Event){
     console.log("Marked as done!...");
-    window.location = "http://localhost:84/EndProject-Webb/MarkAsDone.php";
+    window.location = "MarkAsDone.php";
 
     
 }
