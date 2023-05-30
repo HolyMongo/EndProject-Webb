@@ -53,10 +53,11 @@ include('session.php');
                 <?php
 
                 if (isset($_SESSION['felMedelande'])) {
-                    echo "<p \"class=\"d-flex text-center mx-auto\">" . $_SESSION['felMedelande'] . "</p>";
+                    echo "<p class=\"d-flex text-center mx-auto\">" . $_SESSION['felMedelande'] . "</p>";
                 }
 
                 ?>
+                </div>
             </form>
             </div>
     </div>
@@ -72,5 +73,6 @@ include('session.php');
     integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
     crossorigin="anonymous"
   ></script>
+  <noscript>Please enable support for JavaScript</noscript>
 </body>
 </html>

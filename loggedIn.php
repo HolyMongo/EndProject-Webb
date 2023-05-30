@@ -63,7 +63,7 @@
             $res = array();
             
             $res = $stmt->fetchAll(PDO::FETCH_ASSOC);  
-            $ModuleList = "<ol id=\"moduleList\" class=\"rounded-list mr-auto\">";
+            $ModuleList = "<ol class=\"rounded-list mr-auto\">";
             //En foreach-loop som lägger in alla moduler i en lista och ger dem olika classer och id:n beroende på om de är sub-uppgifter eller inte
             foreach ($res as $module) {
               $stmt = $pdo->prepare("SELECT * FROM progress WHERE userID = :userID AND moduleID = :moduleID");
@@ -72,7 +72,7 @@
               $res2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
               if (floor($module['ModuleNumber']) != $module['ModuleNumber'] && !$alreadyPutOlTag) {
                 $alreadyPutOlTag = true;
-                $ModuleList .= "<ol id=\"moduleList\" class=\"rounded-list\">";
+                $ModuleList .= "<ol class=\"rounded-list\">";
               }elseif(floor($module['ModuleNumber']) == $module['ModuleNumber'] && $alreadyPutOlTag) { 
                 $alreadyPutOlTag = false;
                 $ModuleList .= "</ol>";
@@ -82,6 +82,9 @@
                   $ModuleList .= " isCompleted";
                 }
                 $ModuleList .= "\">" . "<p id=\"" . $module['ModuleName'] ."\" class=\"nav-link\">" .$module['DisplayName'] . "</p></li> ";
+            }
+            if ($alreadyPutOlTag) {
+              $ModuleList .= "</ol>";
             }
             $ModuleList .= "</ol>";
             echo $ModuleList;
@@ -140,6 +143,8 @@
     integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
     crossorigin="anonymous"
   ></script>
+
+  <noscript>Please enable support for JavaScript</noscript>
 
 
 </body>

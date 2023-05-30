@@ -10,21 +10,17 @@ if (document.getElementsByClassName("DoneButton")) {
 
 function SwitchAssignment(Event) {
     var Assignment = Event.target.id;
-
     window.location = "loggedIn.php?assignment=" + Assignment; 
 }
 
-function DoneButton(Event){
+function DoneButton(){
     console.log("Marked as done!...");
     window.location = "MarkAsDone.php";
-
-    
 }
 
 function AddEventListenersSwitchAssignment(item){
     item.addEventListener("click", SwitchAssignment);
 }
-
 
 function AddEventListenersDoneButton(item){
     item.addEventListener("click", DoneButton);

@@ -29,13 +29,30 @@ if (isset($_POST['SignInUser'])) {
         exit;
     }
     //annars hämtar vi data från databasen där användarnamn och lösen matchar det användaren skrev in
+    $sql = "SELECT * FROM users WHERE username = :username";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(array('username' => $username));
+    $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    if (password_verify($pwd, $res[0]['password'])) {
+            $_SESSION['uname'] = $username;
+            $_SESSION['userID'] = $res[0]['userID'];
+            header("location: loggedIn.php");
+            exit;
+    }
+    else {
+       //annars ger vi ett felmedelande och skicakr tillbaka användaren
+       $_SESSION['felMedelande'] = "fel användarnamn <br> eller lösenord";
+       header("location: index.php");
+       exit;
+    }
+    /*
+    kanske byta ut kanske ha kvar. jag inte veta
     $sql = "SELECT * FROM users WHERE username = :username and password = :password";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute(array('username' => $username, 'password' => $pwd));
+    $stmt->execute(array('username' => $username, 'password' => $hash));
 
     $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
     //om vi hittar något, det vill säga om det finns någon användare i databasen med båda de värdena så ger vi session variabler lite värden och sedan skickar användaren till LoggedIn.php
     if (isset($res[0]['userID'])) {
         $_SESSION['uname'] = $username;
@@ -48,6 +65,7 @@ if (isset($_POST['SignInUser'])) {
         header("location: index.php");
         exit;
     }
+    */
 }
 elseif (isset($_POST['CreateUser'])) {
 
@@ -84,25 +102,26 @@ elseif (isset($_POST['CreateUser'])) {
             exit;
         }
 
+    
         //hämtar data från databasen där den har samma användarnamn som det namnet användaren försökte skicka in
-    $sql = "SELECT * FROM users WHERE username = :username";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute(array('username' => $uname));
-    $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    if (isset($res[0]['userID'])) {
+        $sql = "SELECT * FROM users WHERE username = :username";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(array('username' => $uname));
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if (isset($res[0]['userID'])) {
         //Om den redan finns ändras felmedelandet och användaren skickas tillbaka
-        $_SESSION['felMedelande'] = "Användarnamnet finns redan";
-        header("location: registerUser.php");
-        exit;
-    }
-    else {
-        //Om det inte finns så läggs användaren in i databasen och skickas till index.php där hen kan logga in med sin nya användare
-            $sql = "INSERT INTO users(UserName, Password, Email) VALUES ('$uname', '$pwd', '$email')";
+            $_SESSION['felMedelande'] = "Användarnamnet finns redan";
+            header("location: registerUser.php");
+            exit;
+        }
+        else {
+            //Om det inte finns så läggs användaren in i databasen och skickas till index.php där hen kan logga in med sin nya användare
+            $hash = password_hash($pwd, PASSWORD_DEFAULT);
+            $sql = "INSERT INTO users(UserName, Password, Email) VALUES ('$uname', '$hash', '$email')";
             $stmt = $pdo->prepare($sql);
             $stmt->execute(array());
-           header('location: index.php');
-
-    }
+            header('location: index.php');
+        }
 }
 elseif (isset($_POST['SignIn'])) {
     Header("location: index.php");

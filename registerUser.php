@@ -59,7 +59,7 @@
                         <?php
 
                 if (isset($_SESSION['felMedelande'])) {
-                    echo "<br><p \"class=\"d-flex text-center mx-auto\">" . $_SESSION['felMedelande'] . "</p>";
+                    echo "<br><p class=\"d-flex text-center mx-auto\">" . $_SESSION['felMedelande'] . "</p>";
                 }
 
                 ?>
@@ -80,5 +80,6 @@
     integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
     crossorigin="anonymous"
   ></script>
+  <noscript>Please enable support for JavaScript</noscript>
 </body>
 </html>
